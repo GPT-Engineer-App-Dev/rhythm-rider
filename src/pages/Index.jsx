@@ -1,15 +1,32 @@
-// Complete the Index page component here
-// Use chakra-ui
-import { Button } from "@chakra-ui/react"; // example
-import { FaPlus } from "react-icons/fa"; // example - use react-icons/fa for icons
+import { Box, Button, VStack, Text, Image, useColorModeValue } from '@chakra-ui/react';
+import { FaPlay, FaPause, FaUpload } from 'react-icons/fa';
+import { useState, useRef } from 'react';
 
 const Index = () => {
-  // TODO: Create the website here!
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  const togglePlayPause = () => {
+    const prevValue = isPlaying;
+    setIsPlaying(!prevValue);
+    if (!prevValue) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
+  };
+
   return (
-    <Button>
-      Hello world! <FaPlus />
-    </Button>
-  ); // example
+    <VStack spacing={8} p={5} align="center">
+      <Text fontSize="4xl" fontWeight="bold">Welcome to GPT Engineer Music Player</Text>
+      <Image src="/images/music-banner.jpg" alt="Music Banner" borderRadius="lg" />
+      <audio ref={audioRef} src="/music/sample-track.mp3" preload="auto"></audio>
+      <Button leftIcon={isPlaying ? <FaPause /> : <FaPlay />} colorScheme="purple" onClick={togglePlayPause}>
+        {isPlaying ? 'Pause' : 'Play'}
+      </Button>
+      <Button leftIcon={<FaUpload />} colorScheme="teal">Upload New Track</Button>
+    </VStack>
+  );
 };
 
 export default Index;
